@@ -1,0 +1,33 @@
+{% extends 'mainHelper/base.html' %}
+{% block title %}Repairs{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<ul class="list-group">
+    {% for sparePart in spares %}
+    <li class="list-group-item">
+        <div class="container text-center">
+            <div class="row">
+              <div class="col">
+                Model: {{sparePart.model}}
+              </div>
+              <div class="col">
+                {{sparePart.nameOfPart}}
+              </div>
+              <div class="col">
+                In stock: {{sparePart.quantity}}
+              </div>
+              <div class="col">
+                <form method="post" class="form-group">
+                    {% csrf_token %}
+                    <input type="number" name="addQuantity">
+                    <button type="submit" class="btn btn-success" value="{{sparePart.id}}" name="spareId">Add to stock</button>
+                </form>
+              </div>
+            </div>
+        </div>
+    </li>
+    {% empty %}
+    <h1>No spare parts</h1>
+  {% endfor %}
+</ul>
+{% endblock %}

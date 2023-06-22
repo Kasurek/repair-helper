@@ -1,0 +1,89 @@
+{% extends 'mainHelper/base.html' %}
+{% block title %}Naprawy{% endblock %}
+{% block content %}
+<ul class="nav nav-tabs" id="repairTabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="newRepairs-tab" data-bs-toggle="tab" href="#newRepairs" role="tab" aria-controls="newRepairs" aria-selected="true">New repairs</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="inProgressRepairs-tab" data-bs-toggle="tab" href="#inProgressRepairs" role="tab" aria-controls="inProgressRepairs" aria-selected="false">Ongoing repairs</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="completedRepairs-tab" data-bs-toggle="tab" href="#completedRepairs" role="tab" aria-controls="completedRepairs" aria-selected="false">Finished repairs</a>
+  </li>
+</ul>
+
+<div class="tab-content" id="repairTabsContent">
+  <div class="tab-pane fade show active" id="newRepairs" role="tabpanel" aria-labelledby="newRepairs-tab">
+    {% for repair in repairs %}
+      {% if repair.status == 'New repair' %}
+      <div class="card mt-3">
+        <div class="card-header">
+          <h2><strong>{{repair.repairIdentification}}</strong></h2><strong>Repair status: {{repair.status}}</strong>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{repair.deviceType}}</h5>
+          <p class="card-text">{{repair.problemInfo}}</p>
+          <div class="card-footer">Repair recieved at: {{repair.get_start_date}}</div>
+            <form method="post">
+            <a href="{% url 'repair-detail' repair.id %}" class="btn btn-primary" role="button">Show details</a>
+            {% if user.is_staff %}
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger" value="{{repair.id}}" name="repairId">Delete repair</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="tab-pane fade" id="inProgressRepairs" role="tabpanel" aria-labelledby="inProgressRepairs-tab">
+    {% for repair in repairs %}
+      {% if repair.status == 'Ongoing' %}
+      <div class="card mt-3">
+        <div class="card-header">
+          <h2><strong>{{repair.repairIdentification}}</strong></h2><strong>Repair status: {{repair.status}}</strong>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{repair.deviceType}}</h5>
+          <p class="card-text">{{repair.problemInfo}}</p>
+          <div class="card-footer">Repair recieved at: {{repair.get_start_date}}</div>
+            <form method="post">
+            <a href="{% url 'repair-detail' repair.id %}" class="btn btn-primary" role="button">Show details</a>
+            {% if user.is_staff %}
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger" value="{{repair.id}}" name="repairId">Delete repair</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="tab-pane fade" id="completedRepairs" role="tabpanel" aria-labelledby="completedRepairs-tab">
+    {% for repair in repairs %}
+      {% if repair.status == 'Finished' %}
+      <div class="card mt-3">
+        <div class="card-header">
+          <h2><strong>{{repair.repairIdentification}}</strong></h2><strong>Repair status: {{repair.status}}</strong>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{repair.deviceType}}</h5>
+          <p class="card-text">{{repair.problemInfo}}</p>
+          <div class="card-footer">Repair recieved at:  {{repair.get_start_date}}</div>
+            <form method="post">
+            <a href="{% url 'repair-detail' repair.id %}" class="btn btn-primary" role="button">Show details</a>
+            {% if user.is_staff %}
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger" value="{{repair.id}}" name="repairId">Delete repair</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

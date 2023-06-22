@@ -1,0 +1,55 @@
+{% extends "mainHelper/base.html" %}
+
+{% block title %}
+{{ repair.repairIdentification }}
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h1 class="display-4">Repair: {{repair.repairIdentification}}</h1>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <div class="card">
+            <div class="card-body text-center">
+              <h5 class="card-title text-danger">Informations about the problem:</h5>
+              <p class="card-text">{{repair.problemInfo}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body text-center">
+              <h5 class="card-title text-primary">Diagnose and repair:</h5>
+              <p class="card-text">{{repair.repairInfo}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <br>
+  <div class="btn-group">
+    <form method="post">
+      <a href="{% url 'repair-edit' repair.id %}" class="btn btn-info" role="button">Edit Details</a>
+      <button type="submit" class="btn btn-secondary" value="{{ repair.repairModel }}" name="repairModel">Add spare parts</a>
+      {% csrf_token %}
+      <button type="submit" class="btn btn-success" value="{{ repair.id }}" name="repairId">Finish Repair</button>
+    </form>
+  </div>
+</div>
+<br>
+<div class="container text-center">
+  <h2>Parts used for repair</h2>
+  <ul class="list-group">
+    {% for part in repair.spareParts.all %}
+    <li class="list-group-item">{{part.nameOfPart}}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
